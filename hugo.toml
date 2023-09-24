@@ -9,7 +9,7 @@ themesDir = "./themes"
 
 # website title
 # 网站标题
-title = "Linux Bash 深度探索：终端中的代码巫术"
+title = "深入探索命令行的黑魔法，解锁脚本编程的力量。"
 
 # determines default content language ["en", "zh-cn", "fr", "pl", ...]
 # 设置默认的语言 ["en", "zh-cn", "fr", "pl", ...]
@@ -109,7 +109,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   title = "Linux Bash 深度探索：终端中的代码巫术"
   # website description for RSS, SEO, Open Graph and Twitter Cards
   # 网站描述, 用于 RSS, SEO, Open Graph 和 Twitter Cards
-  description = "穿越Linux Bash的二进制星空，深入探索命令行的黑魔法，解锁脚本编程的魔法力量。"
+  description = "深入探索命令行的黑魔法，解锁脚本编程的力量。"
   # website images for Open Graph and Twitter Cards
   # 网站图片, 用于 Open Graph 和 Twitter Cards
   images = ["/logo.png"]
@@ -267,7 +267,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       title = ""
       # subtitle shown in home page (HTML format is supported)
       # 主页显示的网站副标题 (允许 HTML 格式)
-      subtitle = "A Clean, Elegant but Advanced Hugo Theme"
+      subtitle = "Delve into the dark magic of the command line, unlocking the power of script programming."
       # whether to use typeit animation for subtitle
       # 是否为副标题显示打字机动画
       typeit = true
@@ -956,7 +956,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
           gravatarEmail = ""
           avatarURL = "/images/avatar.png"
           title = ""
-          subtitle = "一个简洁、优雅且高效的 Hugo 主题"
+          subtitle = "深入探索命令行的黑魔法，解锁脚本编程的力量。"
           typeit = true
           social = true
           disclaimer = ""
