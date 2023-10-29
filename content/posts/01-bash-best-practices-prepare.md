@@ -35,4 +35,4 @@ draft = false
 2. 语法检查 [shellcheck https://github.com/koalaman/shellcheck](https://github.com/koalaman/shellcheck)
 3. 代码格式化 [shfmt https://github.com/mvdan/sh](https://github.com/mvdan/sh)
 4. 语法快速参考 [https://quickref.me/bash](https://quickref.me/bash)
-5. Google Bash Styleguide [https://google.github.io/styleguide/shellguide.html](https://google.github.io/styleguide/shellguide.html)
+5. Google Shell Style Guide [https://google.github.io/styleguide/shellguide.html](https://google.github.io/styleguide/shellguide.html)
