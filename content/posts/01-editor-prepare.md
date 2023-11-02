@@ -26,7 +26,7 @@ draft = false
 ### 插件安装
 
 正常可能通过 Visual Studio Code 的插件管理功能搜索自动安装。
-如果设备网络受限，可以在网络正常的设备，下载安装包后，拷贝到目标电脑手动安装。
+如果设备网络受限，可以在网络正常的设备，下载好安装介质后，拷贝到目标电脑手动安装。
 
 1. 到 Visual Studio Code 官网 [https://marketplace.visualstudio.com/vscode](https://marketplace.visualstudio.com/vscode)
    搜索需要使用的插件名称。
@@ -45,7 +45,7 @@ draft = false
 ### 插件安装
 
 正常情况下在打开 `.sh` 文件后，JetBrains 会自动提示安装以下的插件。
-如果没有自动提示安装或者设备网络受限，可以在网络正常的设备，下载安装包后，拷贝到目标电脑手动安装。
+如果没有自动提示安装或者设备网络受限，可以在网络正常的设备，下载好安装介质后，拷贝到目标电脑手动安装。
 
 - shfmt 下载链接：[https://github.com/mvdan/sh/releases](https://github.com/mvdan/sh/releases)，
   在 JetBrains 的安装设置路径为 `Preferences | Editor | Code Style | Shell Script`，
