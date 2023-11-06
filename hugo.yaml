@@ -509,7 +509,7 @@ params:
     # 是否开启捐赠按钮，开启后将在每个文章页面底部显示
     # If true, a donate button will be displayed 
     # in every article by default.
-    enable: true
+    enable: false
     # 是否开启捐赠方式的动画效果
     # If true, the donate type title will with animation.
     animation: true
