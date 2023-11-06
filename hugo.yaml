@@ -541,7 +541,7 @@ params:
   # Easily browse and edit blog source code online.
   postEdit:
     enable: true
-    url: https://github.com/ymping/ymping.github.io/tree/main/content/posts
+    url: https://github.com/ymping/ymping.github.io/tree/main/content/
 
 
   # 设置文本的对齐方式
