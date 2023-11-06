@@ -118,10 +118,10 @@ bash-5.2$
 
 `-e` 选项的作用域是单个 bash 进程，如果 bash 进程创建另外一个新的 bash 进程，新的 bash 进程不会继承 `-e` 选项。
 
-比如在 **demo.sh** 脚本中设置了 `set -e`, **demo2.sh** 中没有，如果 **demo.sh** 脚本中调用了（或者 `exec demo2.sh`）*
-*demo2.sh**
-脚本。哪 **demo2.sh** 脚本在执行遇到错误时会停止吗？ 答案是不会，在执行时 **demo.sh** 和 **demo2.sh** 是两个 bash 进程。
-如果是使用 `exec demo2.sh` 的方式调用的 **demo2.sh** 脚本，`exec` 创建的新的 bash 运行时不会有之前 bash 运行时的参数。
+比如在 **demo.sh** 脚本中设置了 `set -e`, **demo2.sh** 中没有，如果 **demo.sh** 脚本中调用了 **demo2.sh** 脚本，
+包括直接调用 `./demo2.sh`，通过子shell `$(demo2.sh)` 或者通过 `exec demo2.sh`。
+哪 **demo2.sh** 脚本在执行遇到错误时会停止吗？ 答案是都不会，因为执行时 **demo.sh** 和 **demo2.sh** 是两个不同的 bash 进程。
+exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个新的进程来运行 **demo2.sh**，新的 bash 运行时不会有之前 bash 的运行时参数。
 
 ---
 
