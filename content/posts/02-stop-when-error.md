@@ -239,7 +239,7 @@ bash-5.2$
 
 ## pipefail
 
-设置了 `set -e`，在使用管道（pipeline）时，管道的第一个命令报错了，管道中的后续命令还会执行吗？
+设置了 `set -e`，在使用管道（pipeline）时，管道中的命令报错了，脚本还会继续执行吗？
 来看一下示例 **demo.sh**：
 
 ```shell
@@ -262,12 +262,13 @@ error code: 0
 after error occurs
 ```
 
-从脚本执行结果来看，`set -e` 在使用管道命令失败的情形并不起作用，`awk` 命令正确地执行了，
+从脚本执行的输出可以看到，管道中的命令执行错误不会导致脚本退出，`awk` 命令正确地执行，
 **error code** 拿到的是 `awk` 的退出状态码 **0**，`grep` 命令的退出状态码被掩盖了！
+原因是脚本是否继续执行是由退出状态码来决定的，而管道的退出状态码默认是管道中最后一个命令的退出状态码，
+管道中其它命令的退出状态码都被掩盖了。
+所以当 `set -e` 时，除了管道中的最后一个命令外，管道中的命令失败不会导致脚本退出。
 
-上文引用的官方文档中，关于 `set -e` 的描述也明确表明，除了管道中的最后一个命令外，管道中的命令失败不会导致脚本退出。
 对于这种情况，bash 中使用 `set -o pipefail` 来避免管道中发生的错误被掩盖。
-
 在 [set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) 中关于 **pipefail** 的描述。
 
 > If set, the return value of a pipeline is the value of the last (rightmost) command
