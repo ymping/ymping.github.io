@@ -256,10 +256,12 @@ echo "after error occurs"
 执行 **demo.sh** 脚本：
 
 ```text
+bash-5.2$ ./demo.sh 
 grep: /non/existent/file: No such file or directory
 awk was executed
 error code: 0
 after error occurs
+bash-5.2$ 
 ```
 
 从脚本执行的输出可以看到，管道中的命令执行错误不会导致脚本退出，`awk` 命令正确地执行，
@@ -292,8 +294,10 @@ echo "after error occurs"
 执行 **demo.sh** 脚本：
 
 ```text
+bash-5.2$ ./demo.sh 
 awk was executed
 grep: /non/existent/file: No such file or directory
+bash-5.2$ 
 ```
 
 通过脚本的输出可以看到，`awk` 命令被执行，但因为 `grep` 命令报错，bash 解释器直接退出了，在管道之后的脚本没有被继续执行。
