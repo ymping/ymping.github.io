@@ -1,7 +1,8 @@
 +++
 title = 'Bash最佳实践：脱缰的野马'
 date = 2023-10-29T15:43:58+08:00
-keywords = 'bash, -e, error, exit, errexit, 错误停止'
+keywords = ['bash', 'error', 'exit', 'errexit', 'pipefail', '错误停止']
+tags = ['bash']
 draft = false
 +++
 
