@@ -79,6 +79,15 @@ HOSTNAME=$(hostname)
 # LOG_LEVEL(default 1):    info: 1    warn: 2    error: 3
 LOG_LEVEL=${LOG_LEVEL:-1}
 
+# default log to stdout
+LOG_TO_STDOUT=${LOG_TO_STDOUT:-1}
+
+# log to file is LOG_FILE is set
+LOG_TO_FILE=${LOG_TO_FILE:-1}
+if [[ -z ${LOG_FILE} ]]; then
+    LOG_TO_FILE=0
+fi
+
 if [[ -t 1 ]]; then
     COLOR_END="\033[0m"
     COLOR_YELLOW="\033[34m"
@@ -92,21 +101,45 @@ else
 fi
 
 info() {
-    [[ ${LOG_LEVEL} -gt 1 ]] && return 0
+    if [[ ${LOG_LEVEL} -gt 1 ]]; then
+        return 0
+    fi
 
-    echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_GREEN}info  - $*${COLOR_END}"
+    if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_GREEN}info  - $*${COLOR_END}"
+    fi
+
+    if [[ ${LOG_TO_FILE} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} info  - $*" >>${LOG_FILE}
+    fi
 }
 
 warn() {
-    [[ ${LOG_LEVEL} -gt 2 ]] && return 0
+    if [[ ${LOG_LEVEL} -gt 2 ]]; then
+        return 0
+    fi
 
-    echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_YELLOW}warn - $*${COLOR_END}"
+    if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_YELLOW}warn - $*${COLOR_END}"
+    fi
+
+    if [[ ${LOG_TO_FILE} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} warn - $*" >>${LOG_FILE}
+    fi
 }
 
 error() {
-    [[ ${LOG_LEVEL} -gt 3 ]] && return 0
+    if [[ ${LOG_LEVEL} -gt 3 ]]; then
+        return 0
+    fi
 
-    echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_RED}error - $*${COLOR_END}"
+    if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_RED}error - $*${COLOR_END}"
+    fi
+
+    if [[ ${LOG_TO_FILE} -eq 1 ]]; then
+        echo -e "$(date '+%F %T') ${HOSTNAME} error - $*" >>${LOG_FILE}
+    fi
 }
 
 info "this is info log"
@@ -119,8 +152,22 @@ error "this is error log"
 1. 打印日志中默认含有主机名
 2. 可以通过环境变量设置 `LOG_LEVEL`，不设置的情况下默认打印所有级别的日志
 3. 支持通过 **tty** 打印的不同级别的日志带不同的颜色
+4. 通过环境变量设置 `LOG_TO_STDOUT` 决定日志是否输出到 **tty**
+5. 通过环境变量设置 `LOG_FILE` 决定日志是否输出到文件
 
-![03-log-echo-1.png](/images/bash/03-log-echo-1.png)
+```text
+bash-5.2$ 
+bash-5.2$ export LOG_LEVEL=2
+bash-5.2$ export LOG_FILE=./demo.log
+bash-5.2$ export LOG_TO_STDOUT=0
+bash-5.2$ 
+bash-5.2$ ./demo.sh 
+bash-5.2$ 
+bash-5.2$ cat ./demo.log 
+2023-11-14 19:12:04 admindeMacBook-Pro.local warn - this is warn log
+2023-11-14 19:12:04 admindeMacBook-Pro.local error - this is error log
+bash-5.2$
+```
 
 对于有多个脚本文件的情况下，不需要在每个 bash 脚本文件中都申明日志打印函数。
 一般只需要把日志打印功能相关的脚本放在一个文件，如 `log.sh`，其它脚本直接 `source log.sh` 即可。
