@@ -8,16 +8,17 @@ draft = false
 
 ## 摘要
 
-默认情况下，Bash 脚本会在错误发生时继续执行。这意味着如果脚本中的某个命令失败（返回非零的 **exit code**），脚本将继续执行后续的命令。
-这可能会导致问题或不正确的结果，要想 Bash 脚本在发生错误时停止执行，可以使用 `set -e` 或 `set -o errexit` 命令，
-它会在脚本的执行过程中， 命令返回任何非零退出代码的情况下使脚本立即停止执行。
+默认情况下，Bash 脚本会在命令执行失败（返回非零的 **exit code**）或者引用未绑定变量时，并不会停止执行。
+这可能会导致非预期的结果发生。
+可以使用 `set -e` 或 `set -o errexit` 命令让 bash 解释器在命令执行失败时立即退出，
+使用 `set -u` 或者 `set -o nounset` 在引用未绑定变量时立即退出。
 
 在使用管道时，由于管道的 **exit code** 默认为管道最后一个命令的 **exit code**，这将导致管道中其它命令的 **exit code** 被掩盖，
-使用 `set -o pipefail` 命令来避免管道中的错误被掩盖。
+使用 `set -o pipefail` 命令来避免管道中的错误被掩盖，即管道中的命令全部成功才会返回 **0** 的 **exit code**。
 
-使用命令 `set -eo pipefail` 来同时启用这两个特性。
+一般使用命令 `set -euo pipefail` 来同时启用这两个特性。
 
-> 在脚本编程领域，一般是通过命令/脚本的 **exit code** （退出状态码）来判断命令/脚本的执行状态，
+> 在脚本编程领域，是通过命令/脚本的 **exit code** （退出状态码）来判断命令/脚本的执行状态，
 > 通常 **exit code** 为 **0** 表示命令/脚本成功执行，**非0** 表示命令/脚本执行失败，有错误发生。
 
 ---
@@ -52,8 +53,6 @@ bash-5.2$
 可以打印的输出可以看到，命令 `mkdir /path/not/exist` 报错了，但是这行命令报错后，后面的命令也继续执行了，
 打印了 `mkdir` 命令的 **exit code: 1** 和提示信息 **after error occurs**。
 
----
-
 **bash 脚本这种发生错误仍继续执行脚本的行为的，会导致后续命令执行所依赖的前提条件不存在，从而导致非预期的问题，
 存在很大的安全风险。**
 尤其是 bash 脚本本身的应用场景是服务器的运维自动化操作，在脚本代码质量不佳的情况下，该特性会使脚本像一匹脱僵野马一样，
@@ -70,16 +69,45 @@ bash-5.2$
 
 ---
 
+下面验证在 bash 脚本中引用未绑定变量时，脚本仍继续执行。修改 **demo.sh** 为
+
+```shell
+#!/usr/bin/env bash
+
+echo "the command is: rm -f ${parent_dir}/${sub_dir}"
+```
+
+执行脚本：
+
+```text
+bash-5.2$ ./demo.sh 
+the command is: rm -f /
+bash-5.2$
+```
+
+脚本在引用未绑定变量时仍继续执行，这可能会导致比上个场景更严重的后果。
+如脚本中有一个删除命令 `rm -rf "${parent_dir}/${sub_dir}"`，在 `sub_dir` 变量未绑定时，
+这行命令被展开为 `rm -rf "${parent_dir}/"`，这会导致其它数据被误删除。如果 `parent_dir`
+变量也未绑定，此时的命令被展开为 `rm -rf /`，这将会是一场灾难！
+
 ## 解决方案
 
 根据 [bash 文档](https://www.gnu.org/software/bash/manual/bash.html) 中有关
-[set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分。
+[set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分：
 
 > Exit immediately if a pipeline (see Pipelines), which may consist of a single simple
 > command (see Simple Commands), a list (see Lists of Commands), or a compound
 > command (see Compound Commands) returns a non-zero status.
 
-改造 **demo.sh** 为：
+[set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-u` 选项的部分：
+
+> Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’, or
+> array variables subscripted with ‘@’ or ‘*’, as an error when performing parameter
+> expansion. An error message will be written to the standard error, and a non-interactive shell will exit.
+
+### 验证 `set -e`
+
+为 **demo.sh** 增加 `set -e` 验证命令执行失败时会停止：
 
 ```shell
 #!/usr/bin/env bash
@@ -115,16 +143,38 @@ mkdir: /path/not: No such file or directory
 bash-5.2$ 
 ```
 
-### `-e` 选项的作用域
+### 验证 `set -u`
 
-`-e` 选项的作用域是单个 bash 进程，如果 bash 进程创建另外一个新的 bash 进程，新的 bash 进程不会继承 `-e` 选项。
+为 **demo.sh** 增加 `set -u` 验证引用未绑定变量时会停止：
 
-比如在 **demo.sh** 脚本中设置了 `set -e`, **demo2.sh** 中没有，如果 **demo.sh** 脚本中调用了 **demo2.sh** 脚本，
+```shell
+#!/usr/bin/env bash
+
+set -u
+
+echo "the command is: rm -f ${parent_dir}/${sub_dir}"
+echo "nothing will output for reference unbound variable"
+```
+
+执行脚本：
+
+```text
+bash-5.2$ ./demo.sh 
+./demo.sh: 行 5: parent_dir: 未绑定的变量
+bash-5.2$ 
+```
+
+可以看到 bash 在执行第一个 `echo` 命令时因为引用未绑定的变量退出了，第二个 `echo` 命令没有执行。
+
+### `-eu` 选项的作用域
+
+`-eu` 选项的作用域是单个 bash 进程，如果 bash 进程创建另外一个新的 bash 进程，新的 bash 进程不会继承 `-e` 选项。
+
+比如在 **demo.sh** 脚本中设置了 `set -eu`, **demo2.sh** 中没有，如果 **demo.sh** 脚本中调用了 **demo2.sh** 脚本，
 包括直接调用 `./demo2.sh`，通过子shell `$(demo2.sh)` 或者通过 `exec demo2.sh`。
 哪 **demo2.sh** 脚本在执行遇到错误时会停止吗？ 答案是都不会，因为执行时 **demo.sh** 和 **demo2.sh** 是两个不同的 bash 进程。
-exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个新的进程来运行 **demo2.sh**，新的 bash 运行时不会有之前 bash 的运行时参数。
-
----
+exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个新的进程来运行 **demo2.sh**，新的 bash 运行时不会有之前 bash
+的运行时参数。
 
 ## 错误处理
 
@@ -241,8 +291,6 @@ after error occurs
 bash-5.2$ 
 ```
 
----
-
 ## pipefail
 
 设置了 `set -e`，在使用管道（pipeline）时，管道中的命令报错了，脚本还会继续执行吗？
@@ -308,9 +356,13 @@ bash-5.2$
 
 通过脚本的输出可以看到，`awk` 命令被执行，但因为 `grep` 命令报错，bash 解释器直接退出了，在管道之后的脚本没有被继续执行。
 
----
-
 ## 总结
 
-脚本中**错误则停止**（exit immediately if command returns a non-zero status）不是默认的行为，
-强烈建议在脚本中使用 `set -eo pipefail` 命令启用**错误则停止**功能，可以有效规避脚本中命令的非预期执行带来的风险，为脱僵的野马套上缰绳。
+```shell
+set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on unbound variable
+set -o pipefail  # don't hide errors within pipes
+```
+
+等效于 `set -euo pipefail`，由于脚本中**错误则停止**（exit immediately if command returns a non-zero status）不是默认的行为，
+强烈建议在脚本中使用 `set -euo pipefail` 命令启用**错误则停止**功能，可以有效规避脚本中命令的非预期执行带来的风险，为脱僵的野马套上缰绳。
