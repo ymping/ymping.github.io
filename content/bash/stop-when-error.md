@@ -178,18 +178,17 @@ exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个�
 
 ## 错误处理
 
-在使用 `-e` 选项后，脚本在遇到执行错误时，就直接停止退出了，如果我们想针对该错误，做一些错误处理，
-类型于高级编辑语言中的 **try...catch** 机制。
+在使用 `-e` 选项后，脚本在遇到执行错误时，就直接停止退出了，如果想要脚本继续执行，并进行错误处理，
+类型于高级编辑语言中的 **try catch** 机制，可以参考下面三种方式。
 
-在 [set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分，
-如果设置了 `-e` 选项，有明确写明在某些命令或者代码片段中，bash 解释器遇到错误不会退出。`if` 是其中的一个命令。
+在 [set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分，有明确写明在某些指令或者代码片段中，bash 解释器遇到错误不会退出。
 
 > The shell does not exit if the command that fails is part of the command list immediately
 > following a while or until keyword, part of the test in an if statement, part of any command
 > executed in a && or || list except the command following the final && or ||, any command in
 > a pipeline but the last, or if the command’s return status is being inverted with !.
 
-故此，对于 **demo.sh** 脚本，我们有收下方式来做处理处理
+故此，对于 **demo.sh** 脚本，我们有收下方式来做错误处理。
 
 ### 方式一: `||`
 
