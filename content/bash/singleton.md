@@ -137,7 +137,8 @@ bash-5.2$
 
 从脚本输出可以看到该脚本同样有防重效果。
 
-在该脚本中，`set -C`表示在使用`>` `>&` `<>`重定向输出时，不覆盖已经存在的文件，同时使用命令组`{}`限定`set -C`仅在命令组范围内生效。
+在该脚本中，`set -C`（同`set -o noclobber` [官方文档](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin)）
+表示在使用`>` `>&` `<>`重定向输出时，不覆盖已经存在的文件，同时使用命令组`{}`限定`set -C`仅在命令组范围内生效。
 如果文件`/var/tmp/my-script-singleton.lock`不存在，则会创建该文件并把当前进程的PID `$$`写入到文件，
 在命令组中的两命令成功执行后，`trap`命令会在脚本**退出**的时候，删除掉文件`/var/tmp/my-script-singleton.lock`。
 
