@@ -2,7 +2,7 @@
 title = 'Bash最佳实践：孤独行者'
 date = 2023-11-18T20:34:00+08:00
 keywords = ['bash', 'lock', 'filelock', '单实例', '防重']
-tags = ['bash']
+tags = ['linux', 'bash']
 draft = false
 +++
 

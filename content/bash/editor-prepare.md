@@ -2,7 +2,7 @@
 title = 'Bash最佳实践：工欲善其事，必先利其器'
 date = 2023-09-23T22:39:48+08:00
 keywords = ['bash', 'plugin', '插件']
-tags = ['bash']
+tags = ['linux', 'bash']
 draft = false
 +++
 

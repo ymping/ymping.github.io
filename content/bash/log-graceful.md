@@ -2,7 +2,7 @@
 title = 'Bash最佳实践：日志优雅打印'
 date = 2023-11-11T11:55:00+08:00
 keywords = ['bash', 'log', '日志']
-tags = ['bash']
+tags = ['linux', 'bash']
 draft = false
 +++
 
