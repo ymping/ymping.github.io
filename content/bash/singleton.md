@@ -155,7 +155,7 @@ bash-5.2$
 
 `flock`是一个内核级别的系统调用，同时也是一个命令行工具，命令`flock`用于管理从脚本或命令行中发起的系统调用。
 
-新建示例程序`singleton-by-flock.sh`，该示例演示如何通过判断一个文件存在与否来实现防重机制。
+新建示例程序`singleton-by-flock.sh`，该示例演示如何通过文件锁来实现防重机制。
 
 ```shell
 #!/usr/bin/env bash
