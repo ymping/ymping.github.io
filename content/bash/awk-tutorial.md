@@ -147,7 +147,7 @@ $0/NR ▶ │  2   │  google.com  │  25   │
 
 ### pattern
 
-前文说到，`Body block` 写为 `<pattern> {<program actions>}` 的形式，如果输入行匹配 pattern 则执行 {} 内的 program actions。
+前文说到，`Body block` 写为 `<pattern 1> {<commands>}` 的形式，如果输入行匹配 pattern 则执行 {} 内的 commands。
 pattern 表达式的写法有：
 
 | Pattern                 | Description                   |
