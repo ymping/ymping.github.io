@@ -139,7 +139,7 @@ $0/NR ▶ │  2   │  google.com  │  25   │
 关于输入分隔符，对输入的数据，首先用`RS`分隔成 Records，再使用`FS`分隔成 Field，由于默认分隔符为换行和空格，
 所以有了**行** `$0` 与 **列** `$1...n` 的概念。
 
-![image](/images/bash/awk-sep.png)
+![image](/images/bash/awk-separator.png)
 
 在复杂的文件解析处理任务中，按实际场景合理的自定义`RS` `FS`，能有效地降低文本解析处理的难度。
 
