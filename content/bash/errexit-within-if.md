@@ -36,7 +36,7 @@ bar() {
     # If not in `if` context, due to foo return non-zero exit code,
     # bar will abort execution when errexit option is set.
     # Therefore, the echo command is never executed.
-    echo "call func1 success"
+    echo "call foo success"
 }
 
 if bar; then
@@ -51,7 +51,7 @@ fi
 ```text
 bash-5.2$ bash  ./errexit-in-if.sh 
 foo running
-call func1 success
+call foo success
 bar success
 bash-5.2$ 
 ```
@@ -98,7 +98,7 @@ foo() {
 
 bar() {
     foo || return $?
-    echo "call func1 success"
+    echo "call foo success"
 }
 
 if bar; then
@@ -155,7 +155,7 @@ foo() {
 
 bar() {
     foo
-    echo "call func1 success"
+    echo "call foo success"
 }
 
 callfunc bar
