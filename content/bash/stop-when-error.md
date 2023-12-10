@@ -176,6 +176,12 @@ bash-5.2$
 exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个新的进程来运行 **demo2.sh**，新的 bash 运行时不会有之前 bash
 的运行时参数。
 
+命令 `shopt -s inherit_errexit` 可以使 subshell 继承 `-e` 选项，具体请见
+[文档](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html)中关于 inherit_errexit 的部分。
+
+> If set, command substitution inherits the value of the errexit option, instead of
+> unsetting it in the subshell environment. This option is enabled when POSIX mode is enabled.
+
 ## 错误处理
 
 在使用 `-e` 选项后，脚本在遇到执行错误时，就直接停止退出了，如果想要脚本继续执行，并进行错误处理，
