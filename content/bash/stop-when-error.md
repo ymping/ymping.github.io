@@ -245,6 +245,8 @@ fi
 
 使用 `if command` 来写 **demo.sh** 的错误处理逻辑：
 
+关于使用 `if` 调用函数的副作用，请查阅[文档](/bash/errexit-within-if)。
+
 ```shell
 #!/usr/bin/env bash
 
