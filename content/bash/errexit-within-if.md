@@ -1,5 +1,5 @@
 +++
-title = 'Bash最佳实践：脱缰的野马2'
+title = 'Bash最佳实践：if 陷阱'
 date = 2023-12-10T20:05:00+08:00
 keywords = ['bash', 'awk']
 tags = ['linux', 'bash']
