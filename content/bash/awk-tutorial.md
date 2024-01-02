@@ -450,13 +450,15 @@ root@406ae21771ad:/#
 此时的 Records 是行，Field 是列，直观上让人感觉`awk`是在按行和列处理文本。
 
 `ifconfig`输入的信息中，由于网络设备名称和其IP信息并不在同一行中，按行来解析处理信息后再汇总会很麻烦，
-所以此处进行了**行列变换**，即把 Records 分隔符`RS`设置为空行`""`[^3]，把 Field 分隔符设置为换行符`\n`。
-这样设备名称和其IP信息被分隔在了同一个 Records 中，设备名称在第一个 Field，IP信息在第二个 Field。
-再通过`split`函数把 Field 的数据分隔在数组中，通过数组索引拿到相应的数据。
+所以此处进行了**行列重定义**，即把 Records 分隔符`RS`设置为空行`""`[^3]，把 Field 分隔符设置为换行符`\n`。
+这样设备名称和其IP信息被分隔在了同一个 Records 中，设备名称在第一个 Field，
+如 `eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 65535`，
+IP信息在第二个 Field，如 `inet 172.17.0.2  netmask 255.255.0.0  broadcast 172.17.255.255`。
+再使用`split`函数把 Field 的数据分隔成数组，通过数组索引拿到设备名，IP等数据。
 [^3]: input record separator (default newline). If empty, blank lines separate records. If more than one character long,
 RS is treated as a regular expression, and records are separated by text matching the expression. (from `man awk`)
 
-本示例的核心要点在于通过自定义`RS` `FS`进行了**行列变换**，把相关的信息都集中在同一个 Records 中处理，从而简化了解析逻辑。
+本示例的核心要点在于通过自定义`RS` `FS`进行了**行列重定义**，把相关的信息都集中在同一个 Records 中处理，从而简化了解析逻辑。
 
 ## 总结
 
