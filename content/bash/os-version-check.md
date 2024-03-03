@@ -1,7 +1,7 @@
 +++
 title = 'Bash常用脚本一：操作系统版本检查'
 date = 2024-03-03T09:58:00+08:00
-keywords = ['bash', 'os version']
+keywords = ['bash', 'os version', 'distribution']
 tags = ['linux', 'bash']
 draft = false
 +++
