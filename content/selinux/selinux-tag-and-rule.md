@@ -126,8 +126,8 @@ MCS 的机制很简单，用户要访问资源，标签中用户的 Category 区
 ```text
 system_u:system_r:container_t:s0:c476,c813
     ^       ^         ^        ^     ^--- unique category
-    |       |         |        |---- secret-level 0
-    |       |         |--- a shared type
+    |       |         |        |---- security level 0
+    |       |         |--- SELinux type
     |       |--- SELinux role
     |------ SELinux user
 ```
