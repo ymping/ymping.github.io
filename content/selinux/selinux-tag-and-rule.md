@@ -61,10 +61,10 @@ allow    dog    dog_chow:food    eat
 类比于 SELinux 的场景中，你是管理员，制定了猫狗吃粮的策略，称为 TE 规则，自动投食机负责执行这个策略，是 Linux 内核，猫和狗都是进程，
 它们受“吃粮策略”的控制，只能吃自己对应的粮食，即进程访问相应资源受 TE 规则的约束，没有在策略中允许的访问都会被拒绝。
 
-现实中，我们有一个 Web 服务器，将 Nginx 进程标记为 *httpd_t*，将 Nginx 需要访问的文件标记为 *httpd_sys_content_t* 或
-*httpd_sys_content_rw_t*，同时该主机还运行的 MySQL 数据库，存储了一些敏感机密数据，将这些数据文件标记为 *mysqld_data_t*。
-如果 Nginx 进程被黑客劫持，可以读取 *httpd_sys_content_t* 标记的内容和读写 *httpd_sys_content_rw_t* 标记的内容。
-即使 Nginx 进程以 root 身份运行，黑客也不被允许读取 MySQL 存储的敏感数据（*mysqld_data_t*）。
+现实中，我们有一个 Web 服务器，将 Nginx 进程标记为 `httpd_t`，将 Nginx 需要访问的文件标记为 `httpd_sys_content_t` 或
+`httpd_sys_content_rw_t`，同时该主机还运行的 MySQL 数据库，存储了一些敏感机密数据，将这些数据文件标记为 `mysqld_data_t`。
+如果 Nginx 进程被黑客劫持，可以读取 `httpd_sys_content_t` 标记的内容和读写 `httpd_sys_content_rw_t` 标记的内容。
+即使 Nginx 进程以 root 身份运行，黑客也不被允许读取 MySQL 存储的敏感数据（`mysqld_data_t`）。
 在这种情况下，SELinux 缓解了受到入侵的严重情况。
 
 TE rules:
@@ -83,8 +83,8 @@ MLS 的全称是 Multi Level Security。MLS 的主要思想是根据进程的层
 需要吃比较精细的狗粮，它不能吃普通的狗粮，怕被噎死，只能给它单独购买狗粮。但旺财可以吃豆豆的狗粮，因为不会被噎死😭。
 
 这便有了层级（Level）的概念，旺财和豆豆都是狗，但为了给它们制定吃狗粮的策略，把它们区分开来，可以让它们处于不同的层级，同时把狗粮和划分层级。
-比如我们把旺财和普通狗粮划分到层级 L1，把豆豆和单独给豆豆购买的狗粮划分到层级 L2。故此可以给旺财和豆豆分别打上标签 dog:l1
-与 dog:l0，普通的狗粮和豆豆的狗粮打上标签 dog_chow:l1 与 dog_chow:l0。
+比如我们把旺财和普通狗粮划分到层级 L1，把豆豆和单独给豆豆购买的狗粮划分到层级 L2。故此可以给旺财和豆豆分别打上标签 `dog:l1`
+与 `dog:l0`，普通的狗粮和豆豆的狗粮打上标签 `dog_chow:l1` 与 `dog_chow:l0`。
 这时给自动投食机设置的“吃粮策略”便是高层级的狗只能吃低于或等于自己层级的食物，反之则不行。
 
 为了实现 MLS，SELinux 使用 Bell-La Padula Model (BLP) 模型，该模型根据附加到每个主体和客体的标签来决定信息如何在系统内流动。BLP
@@ -94,12 +94,12 @@ MLS 的全称是 Multi Level Security。MLS 的主要思想是根据进程的层
 在RHEL中，MLS 是基于修改过的 BLP 原则即 **Bell-La Padula with write equality** 实现。在该基本原则下，
 用户可以读取等于或低于自己敏感级别的文件，但只能写入与自己敏感级别相同文件。这可以防止低权限用户将内容写入到更高级别。
 
-MLS 默认有16个敏感度级别，其中 s15 是最高敏感度级别，s0 是最低敏感度级别。
+MLS 默认有16个敏感度级别，其中 `s15` 是最高敏感度级别，`s0` 是最低敏感度级别。
 
-在现实的计算机中，假设我们有两个 Nginx 进程，一个进程的标签是 *httpd_t:s15*，另一个进程是 *httpd_t:s10*。如果 Nginx 进程
-*httpd_t:s10* 被劫持了，攻击者可以读取 *httpd_sys_content_t:s10* 的资源，但无法读取 *httpd_sys_content_t:s15* 的资源。
-但如果标签是 *httpd_t:s15* 的 Nginx 进程被劫持了，攻击者不仅可以读取 *httpd_sys_content_t:s15* 的资源，还可以读取
-*httpd_sys_content_t:s10* 的资源。
+在现实的计算机中，假设我们有两个 Nginx 进程，一个进程的标签是 `httpd_t:s15`，另一个进程是 `httpd_t:s10`。如果 Nginx 进程
+`httpd_t:s10` 被劫持了，攻击者可以读取 `httpd_sys_content_t:s10` 的资源，但无法读取 `httpd_sys_content_t:s15` 的资源。
+但如果标签是 `httpd_t:s15` 的 Nginx 进程被劫持了，攻击者不仅可以读取 `httpd_sys_content_t:s15` 的资源，还可以读取
+`httpd_sys_content_t:s10` 的资源。
 
 MLS 检查发生在 DAC 和 TE 规则检查通过后。
 
@@ -112,15 +112,15 @@ MCS 的全称是 Multi Category Security。
 
 这种情况下我们应该如何打标签来让自动投食机识别呢？
 
-一个方案是旺财和来福虽都属于狗，但都为它们分别创建新的标签，如 wangcai_dog/laifu_dog 和 wangcai_chow/laifu_chow。但当狗的数量增多后，
-这样的编写的规则会变得不可维护，因为狗的权限基本上都相同。
+一个方案是旺财和来福虽都属于狗，但都为它们分别创建新的标签，如 `wangcai_dog`/`laifu_dog` 和 `wangcai_chow`/`laifu_chow`。
+但当狗的数量增多后，这样的编写的规则会变得不可维护，因为狗的权限基本上都相同。
 
-为了解决这个问题，SELinux 提供一种新的控制策略 MCS。在 MCS 中，我们把标签的格式扩展成 Type:Level:Category 的格式（中间的
-Level 段为 MLS 内容，此处请忽略），如旺财和其狗粮的标签为 dog:l0:random1 和 dog_chow:l0:random1，来福和其狗粮的标签是
-dog:l0:random2 和 dog_chow:l0:random2。
+为了解决这个问题，SELinux 提供一种新的控制策略 MCS。在 MCS 中，我们把标签的格式扩展成 `Type:Level:Category` 的格式（中间的
+Level 段为 MLS 内容，此处请忽略），如旺财和其狗粮的标签为 `dog:l0:random1` 和 `dog_chow:l0:random1`，来福和其狗粮的标签是
+`dog:l0:random2` 和 `dog_chow:l0:random2`。
 
 MCS 的机制很简单，用户要访问资源，标签中用户的 Category 区间必须包含资源的 Category 区间，否则拒绝访问。
-这是之所以用*Category 区间*的表述，是实际情况中，标签是写成 dog:l0:c0-c2 的格式，其中 *c0,c2* 表示一个区间即 *c0-c2*。
+这是之所以用*Category 区间*的表述，是实际情况中，标签是写成 `dog:l0:c0-c2` 的格式，其中 `c0,c2` 表示一个区间即 `c0-c2`。
 一个完整的标签如下:
 
 ```text
@@ -136,14 +136,14 @@ MCS 检查发生在 DAC 和 TE 规则检查通过后。
 
 现实中，MCS 类别取值从 c0 到 c1023。MCS 的一个典型的应用场景是在容器上。
 
-容器启动时，容器引擎会生成一个随机且唯一的 MCS 标签（如 c476,c813）。然后容器引擎会在镜像挂载时，为容器镜像内的文件设置该 MCS
-标签 （c476,c813），随后在启动容器进程时，也会为进程设置同样的 MCS 标签（c476,c813）。这样同一容器内的进程和文件都有相同的 MCS
+容器启动时，容器引擎会生成一个随机且唯一的 MCS 标签（如 `c476,c813`）。然后容器引擎会在镜像挂载时，为容器镜像内的文件设置该 MCS
+标签 （`c476,c813`），随后在启动容器进程时，也会为进程设置同样的 MCS 标签（`c476,c813`）。这样同一容器内的进程和文件都有相同的 MCS
 标签，而不同的容器内的进程和文件的 MCS 标签不同，这样，内核就可以根据 MCS 规则，使容器内的进程仅能访问自己容器的文件系统，
 阻止不同容器间对文件的越界访问。
 
 MCS 为容器的文件系统之间的隔离性，在 mount namespace 基础上再增加了一层安全机制，这样即使某一个容器进程（标签如
-*system_u:system_r:container_t:s0:c476,c813* ）被黑客劫持，逃逸出了容器的 mount namespace，
-也不能对其它容器的文件（标签如 *system_u:object_r:container_file_t:s0:c109,c889*）造成破坏。
+`system_u:system_r:container_t:s0:c476,c813` ）被黑客劫持，逃逸出了容器的 mount namespace，
+也不能对其它容器的文件（标签如 `system_u:object_r:container_file_t:s0:c109,c889`）造成破坏。
 
 ## 总结
 
