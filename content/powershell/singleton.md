@@ -31,6 +31,11 @@ Start-Sleep -Seconds 10
 Exit 0
 ```
 
+防重也可以使用脚本名称和参数来查找该脚本是否正在运行，但此方案在脚本名称和参数唯一性（存在同名脚本）和一致性（变更了脚本名称）得不到保证，
+可能存在误判的概率。
+使用 Global Event 的防重方案只要确保 event name 唯一即可完全避免误判。
+在编码时，可以给 event name 中加入随机 UUID 来确保 event name 唯一。
+
 ## 参考文档
 
 1. [Mutex Class](https://learn.microsoft.com/en-us/dotnet/api/system.threading.mutex?view=net-8.0)
