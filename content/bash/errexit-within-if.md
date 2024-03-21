@@ -1,7 +1,7 @@
 +++
 title = 'Bash最佳实践：if 陷阱'
 date = 2023-12-10T20:05:00+08:00
-keywords = ['bash', 'awk']
+keywords = ['bash', 'error', 'exit', 'errexit', 'if func']
 tags = ['linux', 'bash']
 draft = false
 +++
@@ -83,6 +83,8 @@ bash 脚本中使用函数调用时，某些情况下，还是需要根据函数
 
 ### 显式 return
 
+**不推荐使用此方式！！！**
+
 既然 errexit 不生效，在非零退出状态码时不会停止执行，那就在发生错误时显式的 `return`。
 修改`errexit-in-if.sh`如下：
 
@@ -120,7 +122,9 @@ bash-5.2$
 示例中，使用`||`操作符在调用`foo`函数失败时，return `foo`函数的退出状态码。
 
 这个方法的缺点很明显，其一是对函数体有入侵性，其二是开启 errexit 的初始是脚本发生错误的退出，尽量避免显式的写错误退出逻辑，
-增加了编码的心智负担。现在这种情况，和不设置 errexit 也区别不大，反正都需要显式地进行错误处理。
+增加了编码的心智负担。在此情况下，和不设置 errexit 区别也不大，反正都需要显式地进行错误处理。
+
+另外值得注意的是，在形如 `func_foo || return $?` 的语句中，errexit 机制在 func_foo 函数中也不生效😂！！！
 
 ### wrapper function
 
