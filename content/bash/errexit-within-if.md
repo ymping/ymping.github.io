@@ -70,7 +70,7 @@ GUN mailing lists 中关于此问题的描述
 bash 脚本中使用函数调用时，某些情况下，还是需要根据函数的执行状态做错误处理的，比如函数执行失败时进行一些回滚操作等。
 下面介绍两种 errexit 不生效时的处理办法。
 
-其它 errexit 不生效的情形，如`while` `until`关键字的上下文等，可参考处理。
+其它 errexit 不生效的情形，如在`while` `until` `||` `&&` `|`的上下文，可参考处理。
 
 尝试过在函数中使用`trap 'return $?' ERR`来解决该问题，但测试后发现不行，查阅`trap`的 manual page 后（`man bash`），
 发现`trap ... ERR`同 errexit 选项一样，在`if`等关键字的上下文中也不生效。
@@ -83,7 +83,7 @@ bash 脚本中使用函数调用时，某些情况下，还是需要根据函数
 
 ### 显式 return
 
-**不推荐使用此方式！！！**
+**不推荐使用此方式！！！** 仅作参考
 
 既然 errexit 不生效，在非零退出状态码时不会停止执行，那就在发生错误时显式的 `return`。
 修改`errexit-in-if.sh`如下：
@@ -95,7 +95,8 @@ set -e
 
 foo() {
     echo "foo running"
-    return 99
+    echo "execute the false command to simulate command failure"
+    false || return $?
 }
 
 bar() {
@@ -113,18 +114,20 @@ fi
 执行脚本`errexit-in-if.sh`：
 
 ```text
-bash-5.2$ bash  ./errexit-in-if.sh 
+bash-5.2$ bash ./errexit-in-if.sh 
 foo running
-bar fail, exit code: 99
+execute the false command to simulate command failure
+bar fail, exit code: 1
 bash-5.2$ 
 ```
 
 示例中，使用`||`操作符在调用`foo`函数失败时，return `foo`函数的退出状态码。
+同时`foo`函数中的命令也要做错误处理！
 
 这个方法的缺点很明显，其一是对函数体有入侵性，其二是开启 errexit 的初衷是脚本发生错误时退出，尽量避免显式的写错误退出逻辑，
 减少编码的心智负担。因此显式的使用 `return $?` 和不设置 errexit 区别也不大，反正都需要显式地进行错误处理。
 
-另外值得注意的是，在形如 `func_foo || return $?` 的语句中，errexit 机制在 func_foo 函数中也不生效😂！！！
+另外值得注意的是，如前文所述，在形如 `func_foo || return $?` 的语句中，errexit 机制在 func_foo 函数中也不生效😂！！！
 
 ### wrapper function
 
