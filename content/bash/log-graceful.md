@@ -106,7 +106,7 @@ info() {
     fi
 
     if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
-        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_GREEN}info  - $*${COLOR_END}"
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_GREEN}info  - $*${COLOR_END}" 1>&2
     fi
 
     if [[ ${LOG_TO_FILE} -eq 1 ]]; then
@@ -120,7 +120,7 @@ warn() {
     fi
 
     if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
-        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_YELLOW}warn - $*${COLOR_END}"
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_YELLOW}warn - $*${COLOR_END}" 1>&2
     fi
 
     if [[ ${LOG_TO_FILE} -eq 1 ]]; then
@@ -134,7 +134,7 @@ error() {
     fi
 
     if [[ ${LOG_TO_STDOUT} -eq 1 ]]; then
-        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_RED}error - $*${COLOR_END}"
+        echo -e "$(date '+%F %T') ${HOSTNAME} ${COLOR_RED}error - $*${COLOR_END}" 1>&2
     fi
 
     if [[ ${LOG_TO_FILE} -eq 1 ]]; then
@@ -154,6 +154,8 @@ error "this is error log"
 3. 支持通过 **tty** 打印的不同级别的日志带不同的颜色
 4. 通过环境变量设置 `LOG_TO_STDOUT` 决定日志是否输出到 **tty**
 5. 通过环境变量设置 `LOG_FILE` 决定日志是否输出到文件
+6. 当日志设置输出到 STDOUT 时，重定向到 STDERR，防止在函数中使用了日志打印函数，通过形如 `ret=$(func)` 的方式调用 `func`
+   函数时，`ret` 中了捕获到日志输出
 
 ```text
 bash-5.2$ 
