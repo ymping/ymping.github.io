@@ -1,5 +1,5 @@
 +++
-title = 'Bash最佳实践：if 陷阱'
+title = 'Bash最佳实践：errexit exception'
 date = 2023-12-10T20:05:00+08:00
 keywords = ['bash', 'error', 'exit', 'errexit', 'if func']
 tags = ['linux', 'bash']
@@ -8,18 +8,46 @@ draft = false
 
 ## 摘要
 
-介绍 bash 脚本在使用 `if` 调用函数时，errexit 机制在 `if` 上下文[^1]中不生效问题和解决方案。
+介绍 bash 脚本 `errexit` 机制的例外情况和解决方案，如使用 `if` 调用函数时，`errexit` 机制在 `if` 上下文[^1]中不会生效。
 
 [^1]: 此处的上下文仅指形如`if func1; then func2; else func3; fi`中的 func1 部分，不是整个 `if` 上下文。
 
 ## 背景
 
-在之前的[文章](/bash/stop-when-error)中有介绍到 bash 脚本的 errexit 机制，讲到在 bash 脚本中开启 errexit 选项后
-在遇到非零的返回状态码时，bash 脚本会停止执行并退出，同时也介绍了几种不会退出的特殊情况，如在 `if` `while` 等关键字的上下文中。
+在之前的[文章](/bash/stop-when-error)中有介绍到 bash 脚本的 `errexit` 机制，讲到在 bash 脚本中开启 `errexit` 选项后
+在遇到非零的返回状态码时，bash 脚本会停止执行并退出，同时也介绍了几种不会退出的特殊情况。
 
-关于 `-e` 选项的更多描述，请参考[文档](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html)。
+关于 `-e` 选项的描述，摘录GNU[文档](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html)如下：
 
-本次要探讨的是函数在使用 `if` (if func; then ...; fi)调用时，errexit 不生效的情况。如示例`errexit-in-if.sh`：
+> Exit immediately if a pipeline (see Pipelines), which may consist of a single simple command (see Simple Commands), a
+> list (see Lists of Commands), or a compound command (see Compound Commands) returns a non-zero status. The shell does
+> not exit if the command that fails is part of the command list immediately following a while or until keyword, part of
+> the test in an if statement, part of any command executed in a && or || list except the command following the final &&
+> or ||, any command in a pipeline but the last, or if the command’s return status is being inverted with !. If a
+> compound command other than a subshell returns a non-zero status because a command failed while -e was being ignored,
+> the shell does not exit. A trap on ERR, if set, is executed before the shell exits.
+>
+> This option applies to the shell environment and each subshell environment separately (see Command Execution
+> Environment), and may cause subshells to exit before executing all the commands in the subshell.
+>
+> If a compound command or shell function executes in a context where -e is being ignored, none of the commands executed
+> within the compound command or function body will be affected by the -e setting, even if -e is set and a command
+> returns a failure status. If a compound command or shell function sets -e while executing in a context where -e is
+> ignored, that setting will not have any effect until the compound command or the command containing the function call
+> completes.
+
+简单总结开启 `errexit` 机制后，命令失败但不退出的场景有：
+
+1. 在 `while` 或 `until` 关键字后的命令
+2. 在 `if` 语句中的条件测试语句部分
+3. 在 `||` 或 `&&` 表达式的非结尾部分语句
+4. 在管道 `|` 的非结尾部分语句
+5. 使用的退出状态码使用 `!` 反转
+6. subshell 中（可以使用命令 `shopt -s inherit_errexit` 避免 subshell 中不生效的情况）
+
+在实践中，如果编写复杂脚本，必然大量使用函数封装，在调用函数时，常在 `if` 的条件测试语句中，通过对函数 `return` 值的判定来进行错误处理。
+故本文主要探讨函数在使用 `if` (if func; then ...; fi)调用时，errexit 不生效的情况。
+如示例`errexit-in-if.sh`：
 
 ```shell
 #!/usr/bin/env bash
