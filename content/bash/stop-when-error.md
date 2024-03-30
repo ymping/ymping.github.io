@@ -168,26 +168,25 @@ bash-5.2$
 
 ### `-eu` 选项的作用域
 
-`-eu` 选项的作用域是单个 bash 进程，如果 bash 进程创建另外一个新的 bash 进程，新的 bash 进程不会继承 `-e` 选项。
-
-比如在 **demo.sh** 脚本中设置了 `set -eu`, **demo2.sh** 中没有，如果 **demo.sh** 脚本中调用了 **demo2.sh** 脚本，
-包括直接调用 `./demo2.sh`，通过子shell `$(demo2.sh)` 或者通过 `exec demo2.sh`。
-哪 **demo2.sh** 脚本在执行遇到错误时会停止吗？ 答案是都不会，因为执行时 **demo.sh** 和 **demo2.sh** 是两个不同的 bash 进程。
-exec 调用后虽然进程 pid 保持不变，但本质上还是创建了一个新的进程来运行 **demo2.sh**，新的 bash 运行时不会有之前 bash
-的运行时参数。
-
 命令 `shopt -s inherit_errexit` 可以使 subshell 继承 `-e` 选项，具体请见
 [文档](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html)中关于 inherit_errexit 的部分。
 
 > If set, command substitution inherits the value of the errexit option, instead of
 > unsetting it in the subshell environment. This option is enabled when POSIX mode is enabled.
 
+| case                     | -e                                        | -u       |
+|--------------------------|-------------------------------------------|----------|
+| $(command1;command2)     | not work (unless inherit_errexit opt set) | work     |
+| $(bash_script_file.sh)   | not work                                  | not work |
+| exec bash_script_file.sh | not work                                  | not work |
+
 ## 错误处理
 
 在使用 `-e` 选项后，脚本在遇到执行错误时，就直接停止退出了，如果想要脚本继续执行，并进行错误处理，
 类型于高级编辑语言中的 **try catch** 机制，可以参考下面三种方式。
 
-在 [set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分，有明确写明在某些指令或者代码片段中，bash 解释器遇到错误不会退出。
+在 [set 命令](https://www.gnu.org/software/bash/manual/bash.html#The-Set-Builtin) `-e` 选项的部分，有明确写明在某些指令或者代码片段中，bash
+解释器遇到错误不会退出。
 
 > The shell does not exit if the command that fails is part of the command list immediately
 > following a while or until keyword, part of the test in an if statement, part of any command
