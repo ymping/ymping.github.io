@@ -1,5 +1,5 @@
 +++
-title = 'Bash最佳实践：errexit exception'
+title = 'Bash最佳实践：errexit 的例外'
 date = 2023-12-10T20:05:00+08:00
 keywords = ['bash', 'error', 'exit', 'errexit', 'if func']
 tags = ['linux', 'bash']
