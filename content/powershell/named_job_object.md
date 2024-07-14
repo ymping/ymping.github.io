@@ -1,6 +1,6 @@
 +++
 title = 'PowerShell interacts with Windows Job Objects'
-date = 2024-07-12T22:49:00+08:00
+date = 2024-07-14T13:19:00+08:00
 keywords = ['powershell', 'NamedJobObject', 'JobObject', '作业对象']
 tags = ['windows', 'powershell']
 draft = false
