@@ -43,13 +43,13 @@ if ($jobHandle -eq [IntPtr]::Zero) {
     Exit 1
 }
 else {
-    Write-Output "Job object '$Name' created successfully."
+    Write-Output "Job object '$Name' created successfully"
 }
 
 $ok = [Win32.JobObject]::AssignProcessToJobObject($jobHandle, [Win32.JobObject]::GetCurrentProcess())
 
 if ($ok) {
-    Write-Output "Current process $PID assigned to job object '$Name' successfully."
+    Write-Output "Current process $PID assigned to job object '$Name' successfully"
 }
 else {
     Write-Error "Failed to assign current process $PID to job object"
