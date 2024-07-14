@@ -1,13 +1,12 @@
 +++
-title = 'PowerShell interacts with Windows Job Objects'
+title = 'PowerShell Interop C#'
 date = 2024-07-12T22:49:00+08:00
-keywords = ['powershell', 'JobObject', '作业对象']
+keywords = ['powershell', 'C#', 'CSharp', 'JobObject', '作业对象']
 tags = ['windows', 'powershell']
 draft = false
 +++
 
-Windows 的 `Job Objects`（作业对象）允许将进程组作为一个单元进行管理。 作业对象是可访问的、安全的、可共享的对象，用于控制与其关联的进程的属性。
-针对某个作业对象执行的操作会影响与该作业对象关联的所有进程。 包括如限制工作集大小和设置进程优先级，或终止与作业对象关联的所有进程等。
+PowerShell 主要使用 C# 编写，其内部运行环境也是基于 .NET Framework，因此 PowerShell 与 .NET 交互十分简单。
 
 本文给出了一个使用 PowerShell 脚本调用 C# 代码操作 `Job Objects` 的示例，该示例代码的功能是传入一个 `Job Objects` 的名称，
 返回与该 `Job Objects` 关联的所有进程的 PID 列表。
