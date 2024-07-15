@@ -9,11 +9,12 @@ draft = false
 Windows 的 `Job Objects`（作业对象）允许将进程组作为一个单元进行管理。 作业对象是可访问的、安全的、可共享的对象，用于控制与其关联的进程的属性。
 针对某个作业对象执行的操作会影响与该作业对象关联的所有进程。 包括如限制工作集大小和设置进程优先级，或终止与作业对象关联的所有进程等。
 
-本文给出的示例代码的功能为创建并关联进程信息到 `Job Objects`，然后再使用命令获取与 `Job Objects` 关联的进程信息。
+本文给出的示例代码的功能为使用 PowerShell 脚本创建并关联进程信息到 `Job Objects`，然后再使用 PowerShell
+命令获取与 `Job Objects` 关联的进程信息。
 
 ## New `Job Objects` and Assign Process
 
-脚本 `New-JobObject.ps1` 如下，在 PowerShell 中执行命令 `.\New-JobObject.ps1 -Name mydemojobobject` 创建一个名为 
+脚本 `New-JobObject.ps1` 如下，在 PowerShell 中执行命令 `.\New-JobObject.ps1 -Name mydemojobobject` 创建一个名为
 `mydemojobobject` 的 `Job Objects` 对象，并次当前进程关联到该对象。
 
 ```powershell
