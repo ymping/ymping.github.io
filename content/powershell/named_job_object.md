@@ -1,5 +1,5 @@
 +++
-title = 'PowerShell interacts with Windows Job Objects'
+title = 'PowerShell with Windows Job Objects'
 date = 2024-07-14T13:19:00+08:00
 keywords = ['powershell', 'NamedJobObject', 'JobObject', '作业对象']
 tags = ['windows', 'powershell']
@@ -53,6 +53,7 @@ if ($ok) {
 }
 else {
     Write-Error "Failed to assign current process $PID to job object"
+    Exit 1
 }
 
 Start-Sleep -Seconds 60
