@@ -35,7 +35,7 @@ $ScriptBlock = {
 
     $Sec = Get-Random -Minimum 5 -Maximum 10
     Start-Sleep -Seconds $Sec
-    $ShareContext[$TID] = "$TID do something need $Sec seconds"
+    $ShareContext[$TID] = "$TID do something took $Sec seconds"
 
     $TS2 = Get-Date
     Write-Host "$(Get-Date -Date $TS2 -Format 'yyyy-MM-dd HH:mm:ss') $TID - thread No: $ThreadNo finish, took $(($TS2 - $TS1).TotalSeconds) seconds"
@@ -109,11 +109,11 @@ PS C:\Users\admin\Desktop\code\multithreading> powershell.exe -ExecutionPolicy B
 2024-07-16 23:30:04 17 - thread No: 2 finish, took 9.0707772 seconds
 2024-07-16 23:30:04  7 - wait thread finish took 9.1223416 seconds
 ---------- Share Context ----------
-20 : 20 do something need 5 seconds
-19 : 19 do something need 6 seconds
-17 : 17 do something need 9 seconds
-16 : 16 do something need 5 seconds
-15 : 15 do something need 8 seconds
+20 : 20 do something took 5 seconds
+19 : 19 do something took 6 seconds
+17 : 17 do something took 9 seconds
+16 : 16 do something took 5 seconds
+15 : 15 do something took 8 seconds
 PS C:\Users\admin\Desktop\code\multithreading>
 ```
 
