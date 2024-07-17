@@ -11,9 +11,10 @@ PowerShell 主要使用 C# 编写，其内部运行环境也是基于 .NET Frame
 本文给出了一个使用 PowerShell 脚本调用 C# 代码操作 `Job Objects` 的示例，该示例代码的功能是传入一个 `Job Objects` 的名称，
 返回与该 `Job Objects` 关联的所有进程的 PID 列表。
 
-> 示例功能使用纯 PowerShel 实现请参考文章 [named_job_object](/powershell/named_job_object/)
 
 ## 示例代码
+
+> 此示例功能使用纯 PowerShel 实现和创建 `Job Objects` 请参考文章 [named_job_object](/powershell/named_job_object/)
 
 文件 `JobObjectHelper.cs` 与 `Get-JobObjectPID.ps1` 需处理同一目录。
 

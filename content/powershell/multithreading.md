@@ -92,6 +92,8 @@ foreach ($i in $ShareContext.GetEnumerator() )
    这可能会破坏 Runspace 的状态或导致死锁。如果需要在 Runspace 中使用到 Class，在 PowerShell 5.x 中， 
    可以在执行任务的每个 Runspace 中单独申明 Class，在 PowerShell 7.x 中，可以在定义类时添加 `NoRunspaceAffinity` 属性以避免亲和性问题。
    更多请参考 [NoRunspaceAffinity attribute](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_classes?view=powershell-7.4#norunspaceaffinity-attribute)
+3. 如在线程中遇到 `Write-Host` 命令输出内容在终端无显示时，可以尝试将主线程的 `$Host` 变量注入子线程中，假设注入后名称为 `$OuterHost`，
+   在子线程中可以使用 `$OuterHost.UI.WriteLine("Hello")` 方法进行输出打印。
 
 执行示例代码：
 
