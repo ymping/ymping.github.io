@@ -65,13 +65,24 @@ Start-Sleep -Seconds 60
 在脚本 `New-JobObject.ps1` 执行期间，新打开一个 PowerShell 执行窗口，通过以下命令获取到关联到指定 `Job Objects` 对象的进程信息。
 
 ```powershell
-PS C:\Users\admin> $Job = Get-CimInstance -ClassName Win32_NamedJobObject -Filter "CollectionID = 'mydemojobobject'"
+PS C:\Users\admin> $Obj = Get-CimInstance -ClassName Win32_NamedJobObject -Filter "CollectionID = 'mydemojobobject'"
 PS C:\Users\admin>
-PS C:\Users\admin> Get-CimAssociatedInstance -InputObject $Job -ResultClassName Win32_Process
+PS C:\Users\admin> $Obj
+
+
+Caption             :
+CollectionID        : mydemojobobject
+Description         :
+BasicUIRestrictions : 0
+PSComputerName      :
+
+
+
+PS C:\Users\admin> Get-CimAssociatedInstance -InputObject $Obj -ResultClassName Win32_Process
 
 ProcessId Name           HandleCount WorkingSetSize VirtualSize
 --------- ----           ----------- -------------- -----------
-10628     powershell.exe 559         67985408       2204013916160
+6216      powershell.exe 559         67383296       2204011286528
 
 
 PS C:\Users\admin>
