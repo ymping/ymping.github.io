@@ -105,7 +105,7 @@ PS C:\Users\admin>
 可以通过 PID 查找到其关联的 `Job Objects` 信息。
 
 ```powershell
-PS C:\Users\admin> $Process = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = 1436"
+PS C:\Users\admin> $Process = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = 6216"
 PS C:\Users\admin>
 PS C:\Users\admin> $Process
 
