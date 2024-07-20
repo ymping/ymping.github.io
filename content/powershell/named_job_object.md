@@ -60,9 +60,18 @@ else {
 Start-Sleep -Seconds 60
 ```
 
-## Get Process from `Job Objects`
+执行该脚本：
 
-在脚本 `New-JobObject.ps1` 执行期间，新打开一个 PowerShell 执行窗口，通过以下命令获取到关联到指定 `Job Objects` 对象的进程信息。
+```powershell
+PS C:\Users\admin\Desktop\code\windows_job_objects> .\New-JobObject.ps1 -Name mydemojobobject
+Job object 'mydemojobobject' created successfully.
+Current process 6216 assigned to job object 'mydemojobobject' successfully.
+PS C:\Users\admin\Desktop\code\windows_job_objects>
+```
+
+## Get Process by Job Objects
+
+在脚本 `New-JobObject.ps1` 执行期间，新打开一个 PowerShell 执行窗口，通过以下命令获取到关联到指定 `Job Objects` 的进程信息。
 
 ```powershell
 PS C:\Users\admin> $Obj = Get-CimInstance -ClassName Win32_NamedJobObject -Filter "CollectionID = 'mydemojobobject'"
@@ -88,3 +97,34 @@ ProcessId Name           HandleCount WorkingSetSize VirtualSize
 PS C:\Users\admin>
 ```
 
+## Get Job Objects by Process
+
+同理，也可以通过进程信息查找到该进程关联的 `Job Objects` 对象。
+
+在脚本 `New-JobObject.ps1` 执行期间，打印了关联到 `mydemojobobject` 作业对象的进程 PID。
+可以通过 PID 查找到其关联的 `Job Objects` 信息。
+
+```powershell
+PS C:\Users\admin> $Process = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = 1436"
+PS C:\Users\admin>
+PS C:\Users\admin> $Process
+
+ProcessId Name           HandleCount WorkingSetSize VirtualSize
+--------- ----           ----------- -------------- -----------
+6216      powershell.exe 560         67547136       2204013973504
+
+
+PS C:\Users\admin>
+PS C:\Users\admin> Get-CimAssociatedInstance -InputObject $Process -ResultClassName Win32_NamedJobObject
+
+
+Caption             :
+CollectionID        : mydemojobobject
+Description         :
+BasicUIRestrictions : 0
+PSComputerName      :
+
+
+
+PS C:\Users\admin>
+```
