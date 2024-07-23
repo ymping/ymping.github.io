@@ -28,6 +28,8 @@ Lock-Singleton
 Write-Host "doing something here, sleep 10s"
 Start-Sleep -Seconds 10
 
+$Global:Mutex.Close()
+
 Exit 0
 ```
 
@@ -39,6 +41,7 @@ Exit 0
 
 另外需要注意的是需要把变量 `$Mutex` 申明为 `Global`（或者把该变量作为函数的返回值返回并在外部作用域中持有），
 以避免该变量被释放后资源被销毁，导致锁失效。
+在脚本最后释放锁，使脚本在当前 PowerShell 进程中可以被重复执行。
 
 ## 参考文档
 
