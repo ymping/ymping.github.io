@@ -124,3 +124,5 @@ PS C:\Users\admin\Desktop\code\multithreading>
 1. about [PowerShell Class](https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.powershell)
 2. about [InitialSessionState Class](https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.runspaces.initialsessionstate)
 3. about [RunspaceFactory Class](https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.runspaces.runspacefactory)
+4. about [Sharing Variables and Live Objects Between PowerShell Runspaces](https://learn-powershell.net/2013/04/19/sharing-variables-and-live-objects-between-powershell-runspaces/)
+5. about [Using custom Functions and Types in PowerShell Runspaces](https://communary.net/2016/10/01/using-custom-functions-and-types-in-powershell-runspaces/)
