@@ -278,7 +278,7 @@ function cube(x) {
 }
 
 BEGIN {
-    printf("The cube of %d is %s\n", ARGV[1], square(ARGV[1]))
+    printf("The cube of %d is %s\n", ARGV[1], cube(ARGV[1]))
 }
 ```
 
