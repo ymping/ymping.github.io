@@ -198,6 +198,8 @@ ssh -CNf -D 0.0.0.0:1080 root@Proxy2
 > lookups are performed on supplied names. By default all
 > port forwarding requests are permitted.
 
+需要注意的是，`PermitOpen` 限制的目标地址不支持 CIDR 格式的 IP 地址网段。
+
 ## 参考
 
 1. [sshd config](https://man7.org/linux/man-pages/man5/sshd_config.5.html)
