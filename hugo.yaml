@@ -20,47 +20,121 @@ title: Bash Best Practices
 # Theme name
 theme: hugo-theme-next
 # 站点默认的语言和代码
-# Default laguage & code for website
+# Default language & code for website
 defaultContentLanguage: zh-cn
 languageCode: zh-CN
+# 多语言配置
+# Multi-language settings
+languages:
+  zh-cn:
+    languageCode: zh-CN
+    languageDirection: ltr
+    languageName: "简体中文"
+    weight: 1    
+  en-us:
+    languageCode: en-US
+    languageDirection: ltr
+    languageName: English
+    weight: 2
+    menus:
+      main:
+        - identifier: home
+          name: Home
+          pageRef: /
+          pre: home
+          weight: 1
+        - identifier: about
+          name: About
+          pageRef: /about.html
+          pre: user
+          weight: 2
+        - identifier: flinks
+          name: Friend's Links
+          pageRef: /flinks.html
+          pre: thumbs-up
+          weight: 3
+        - identifier: example
+          name: Example
+          pre: angles-down
+          weight: 4
+        - identifier: syntax
+          name: Syntax Highlighting
+          pageRef: /post/09-syntax-highlighting
+          weight: 1   
+          parent: example
+        - identifier: math
+          name: Math Formula
+          pageRef: /post/10-math-formula
+          weight: 2   
+          parent: example
+        - identifier: flow-charts
+          name: Flow Charts
+          pageRef: /post/11-mermaid-charts
+          weight: 3
+          parent: example
+        - identifier: archives
+          name: Archives
+          pageRef: /archives
+          pre: archive
+          weight: 5
+        - identifier: commonweal
+          name: Commonweal404
+          pageRef: /404.html
+          pre: heartbeat
+          weight: 6
+    params:
+      yearFormat: "2006"
+      monthFormat: "01/02"
+      dateFormat: "2006/01/02"
+      timeFormat: "2006/01/02 15:04:05 -07:00"
+
+      author: NexT Theme
+      subtitle: Build for Hugo Theme
+      description: Keep it simple, keep it powerful.
+      keywords: Hugo,NexT,theme,simple,powerful
+
+      linksSets:
+        title: Links
+      
+      footer:
+        beian:
+          enable: false
+      
+      postFooter:
+        endLineTip: "~ End Line ~"
+      
+      rewardSets:
+        comment: '<i class="fa-solid fa-mug-hot"></i>  How about you buy me a coffee?ヾ(^▽^*)))'
+
 # 是否包含中文，日语，韩文
 # Whether contains Chinese, Japanese and Korean
 hasCJKLanguage: true
 # 每页显示文章数量
 # Display items per page
-paginate: 10
+pagination:
+  pagerSize: 10
 # 开启支持表情符号
 # Enable Emoji support
 enableEmoji: true
-# 让 Makedown 文档支持 HTML 语法，高亮，文章目录等功能
+# 让 Markdown 文档支持 HTML 语法，高亮，文章目录等功能
 # Make markdown content support HTML syntax, highlight, toc etc.
 markup:
   goldmark:
     renderer:
       unsafe: true
+  # 高亮代码的样式
+  # Highlight style of code
   highlight:
-    # # 高亮代码的样式名称，可选：monokai | emacs | api | dracula | friendly
-    # # 更多的样式：https://xyproto.github.io/splash/docs/all.html
-    # # Highlight style: monokai | emacs | api | dracula | friendly
-    # # More: https://xyproto.github.io/splash/docs/all.html 
-    # style: "monokai"
     anchorLineNos: true
     codeFences: true
     guessSyntax: true
-    hl_Lines: ""
-    hl_inline: false
-    lineAnchors: ""
-    lineNoStart: 1
-    lineNos: false
-    lineNumbersInTable: false
-    noClasses: true
-    noHl: false
-    style: monokai
-    tabWidth: 2
+    lineNos: true
+    lineNumbersInTable: true
+    noClasses: false
   tableOfContents:
     # 开始/结束标题级别：1-6 (建议从2开始)
     # Heading title level of start or end: 1-6
-    # Recommand start at 2
+    # Recommended startLevel: 2
     startLevel: 2
     endLevel: 4
 
@@ -109,7 +183,8 @@ minify:
 # 菜单配置说明
 # identifier ： 唯一标识不可重复
 # name       ： 菜单显示名称
-# pageref    ： 本站点链接地址，与 URL 选其一
+# pageRef    ： 文章在content目录下的相对路径, 更多信息请
+#               参考：https://gohugo.io/content-management/menus/#properties-site-configuration
 # url        ： 站点外部链接地址，以 http 或者 https 开头
 # pre        ： 菜单小图标
 # weight     ： 显示顺序，字数越小越靠前
@@ -117,7 +192,8 @@ minify:
 # Menus Settings
 # identifier : Unique ID cannot be repeated
 # name       : Menu name
-# pageref    : Link of webiste and not appeare same time with url
+# pageRef    : This article in content to director,more information
+#              ref:https://gohugo.io/content-management/menus/#properties-site-configuration
 # url        : Exteneral link out of website and start with http or https
 # pre        : Icon of menu
 # weight     : Order number and smaller is top
@@ -126,29 +202,49 @@ menus:
   main:
     - identifier: home
       name: 首页
-      pageref: /
+      pageRef: /
       pre: home
       weight: 1
     - identifier: about
       name: 关于
-      pageref: /about.html
+      pageRef: /about
       pre: user
       weight: 2
     - identifier: flinks
-      name: 站点示例
-      pageref: /flinks.html
+      name: 友情链接
+      pageRef: /flinks
       pre: thumbs-up
       weight: 3
+    - identifier: example
+      name: 语法示例
+      pre: angles-down
+      weight: 4
+    - identifier: syntax
+      name: 语法高亮
+      pageRef: /post/09-syntax-highlighting
+      weight: 1
+      parent: example
+    
+    - identifier: math
+      name: 数学公式
+      pageRef: /post/10-math-formula
+      weight: 2 
+      parent: example
+    - identifier: flow-charts
+      name: 流程图
+      pageRef: /post/11-mermaid-charts
+      weight: 3
+      parent: example
     - identifier: archives
       name: 归档
-      pageref: /archives
+      pageRef: /archives
       pre: archive
-      weight: 4
+      weight: 5
     - identifier: commonweal
       name: 公益 404
-      url: /404.html
+      pageRef: /404.html
       pre: heartbeat
-      weight: 5
+      weight: 6
 
 #-----------------------------------------
 # Hugo NexT 主题参数配置
@@ -157,14 +253,14 @@ menus:
 params:
   # 需要显示文章的部分，即content目录下的文件夹名称
   # Sections for show in home & archive page 
-  # and it's forlder name which under content
+  # and it's folder name which under content
   mainSections: ["posts", "bash", "powershell", "selinux", "ssh"]
   # 年，月，日及时间的格式化样式
   # Format style for year,month,date & time
   yearFormat: "2006"
   monthFormat: "01-02"
   dateFormat: "2006-01-02"
-  timeFormat: "2006-01-02T15:04:05-07:00"
+  timeFormat: "2006-01-02 15:04:05 -07:00"
 
   # 页面模式
   # Schemes
@@ -221,6 +317,13 @@ params:
     # 文章底部显示
     # Show in post footer
     post: true
+    # 是否为 AI 撰写
+    # Is AI write or not
+    byai: false
+    # NotByAI icon 颜色，可选配置 black | white
+    # NotByAI icon color. Available values: black | white
+    notByAiIconColor: "white"
+
 
   # OG SEO 配置
   # Open graph settings
@@ -385,10 +488,7 @@ params:
   # 站点底部设置
   # Footer Settings
   # ---------------------------------------------------------------
-  footer:
-    # 启动谷歌翻译功能
-    # Enable google translate in footer
-    translate: true
+  footer:    
     # 站点开始年份，默认为当下时间的年份
     # Specify the year when the site was setup. 
     # If not defined, current year will be used.
@@ -447,8 +547,11 @@ params:
             url: /imgs/vendors/upyun.png
             width: 43
           link: https://upyun.com
-        - name: Webify
-          link: https://webify.cloudbase.net
+        - name: Github
+          link: https://github.com
+          image:
+            url: /imgs/vendors/github.svg
+            width: 14
 
 
   # ---------------------------------------------------------------
@@ -482,15 +585,46 @@ params:
     # 是否开启评论数显示
     comments: 
       enable: true
-      # 评论统计插件，暂只支持waline
-      # Comment counter plugin, only support waline
+      # 评论统计插件，暂只支持waline | waline3 | twikoo
+      # Comment counter plugin, only support waline | waline3 | twikoo
       plugin: waline
     # 是否开启页面访问数显示
     views:
       enable: true
-      # 页面访问统计插件，支持busuanzi, waline, leancloud
-      # Page views counter plugin, support: busuanzi, waline, leancloud
+      # 页面访问统计插件，支持busuanzi, waline, waline3, twikoo (其中 twikoo 仅支持文章页显示)
+      # Page views counter plugin, support: busuanzi, waline, waline3, twikoo (twikoo only support in post page)
       plugin: busuanzi
+    # 是否开启过期提示
+    # Expired tip
+    expired: false
+    # 是否开启摘要显示
+    # Enable summary
+    summary: true
+
+  # 文章内容中的提示信息设置
+  # Alert settings in post content
+  postAlerts:
+    info:
+      icon: "circle-info"
+      color: "#4A90E2"
+    note:
+      icon: "bell"
+      color: "#17A2B8"
+    help:
+      icon: "circle-question"
+      color: "#967ADC"
+    error:
+      icon: "circle-xmark"
+      color: "#DC3545"
+    warning:
+      icon: "triangle-exclamation"
+      color: "#F39C12"
+    success:
+      icon: "circle-check"
+      color: "#32CD32"
+    important:
+      icon: "circle-plus"
+      color: "#007BFF"
 
   # 文章底部的设置
   # Post footer settings
@@ -514,7 +648,7 @@ params:
     # If true, the donate type title will with animation.
     animation: true
     # 捐赠信息的描述，支持 HTML 语法
-    # Comment for donate and suppport HTML syntax
+    # Comment for donate and support HTML syntax
     comment: '<i class="fa-solid fa-mug-hot"></i>请我喝杯咖啡吧 ヾ(^▽^*)))'
     # 捐赠方式
     # 用例： `名称:图像地址`
@@ -534,7 +668,7 @@ params:
     #channel0: Twitter || https://twitter.com/username || fab fa-twitter
     #channel1: Telegram || https://t.me/channel_name || fab fa-telegram
     channel2: WeChat || /images/wechat_channel.jpg || fab fa-weixin
-    channel3: RSS || /atom.xml || fa fa-rss
+    channel3: RSS || /rss.xml || fa fa-rss
 
   # 文章的在线编辑
   # Post edit
@@ -579,12 +713,15 @@ params:
     # 在代码块上添加拷贝按钮
     # Add copy button on codeblock
     copyBtn: true
+    # 代码块的默认显示行高
+    # Default max height of codeblock.
+    maxHeight: 200
 
   # 返回顶部设置
   # Backtop settings
   backTop:
     # 开启返回顶部按钮显示
-    # If true, will display backtop button in buttom.
+    # If true, will display backtop button in bottom.
     enable: true
     # 在侧边栏显示返回顶部按钮
     # Back to top in sidebar.
@@ -612,7 +749,7 @@ params:
     # Change the color of progress bar, using Hex Code.
     color: "#37c6c0"
     # 进度条的高度
-    # Hight of the read progress bar.
+    # Height of the read progress bar.
     height: 3px
 
   # 书签功能
@@ -796,7 +933,7 @@ params:
     # 可选值：livere | waline | utterances | artalk | giscus
     # Choose a comment system to be displayed by default.
     # Available values: livere | waline | utterances | artalk | giscus 
-    active: giscus
+    active: waline
     # 让用户自己选择使用评论插件留言
     # 如果设置为 false，将采用 active 参数的那个插件
     # Setting `true` means remembering the comment system selected by 
@@ -806,17 +943,17 @@ params:
     # Lazyload all comment systems.
     # lazyload: false
     # 设置你要显示的2个评论插件，`weight` 数字越小越靠前
-    # `name` 参数名可选值：livere | waline | utterances | artalk | giscus
+    # `name` 参数名可选值：livere | waline | waline3 | utterances | artalk | giscus
     # Modify texts or order for any naves, here are some examples.
-    nav:
-      - name: waline
-        title: Waline
-        color: "#27ae60"
-        weight: 2
-      - name: giscus
-        title: Giscus
-        color: "#886ce4"
-        weight: 1
+    # nav:
+    #   - name: waline
+    #     title: Waline
+    #     color: "#27ae60"
+    #     weight: 1
+    #   - name: giscus
+    #     title: Giscus
+    #     color: "#886ce4"
+    #     weight: 2
 
   # Waline 评论插件
   # 更多配置信息请参考：https://waline.js.org/
@@ -833,6 +970,20 @@ params:
     reactionText: [ '点赞', '踩一下', '得意', '不屑', '尴尬', '睡觉']
     reactionTitle: "你认为这篇文章怎么样？"
     serverURL: #<your waline server url>
+  # Waline(2) 与 Waline3 无法兼容只能是二选一
+  # Waline3 采用的是ES模块开发，需要更高版本的浏览器才能支持，如考虑兼容性建议可优先选用Waline2
+  # waline3:
+  #   placeholder: "请文明发言哟 ヾ(≧▽≦*)o"
+  #   sofa: "快来发表你的意见吧 (≧∀≦)ゞ"
+  #   emoji: false
+  #   search: true
+  #   imgUploader: false
+  #   wordLimit: 200
+  #   requiredMeta: ['nick', 'mail']
+  #   reaction: true
+  #   reactionText: [ '点赞', '踩一下', '得意', '不屑', '尴尬', '睡觉']
+  #   reactionTitle: "你认为这篇文章怎么样？"
+  #   serverURL: #<your waline server url>
 
   # Artalk 评论插件
   # 更多配置信息请参考：https://artalk.js.org
@@ -872,36 +1023,48 @@ params:
   # 更多配置信息请参考：https://giscus.app
   # Giscus comments system
   # For more information: https://giscus.app
-  giscus:
-    # Github 仓库地址，格式：用户名/仓库名称
-    # Github repository owner and name
-    repo: username/repo-name
-    # Giscus 生成的仓库 Id
-    # Generate repository Id from Giscus
-    repoId: #<repo-id>
-    # 讨论区的分类名称
-    # Github discussions category
-    category: Comments
-    # 讨论区分类 ID
-    # Generate category Id from Giscus
-    categoryId: #<category-id>
-    # 帖子上的反应将会显示在评论前
-    # The reactions for post will be shown before the comments
-    reactions: false
-    # 将元数据定期被发送到父页面（被嵌入的页面或控制台，用于调试）
-    # Metadata will be sent periodically to the parent window
-    emit: false
-    # 评论输入框的位置，可选值： top | bottom
-    # Aavilable value: top | bottom
-    # 讨论区帖子标题，可选值： pathname | url | title | og:title | 自定义
-    # Available values: pathname | url | title | og:title | custom
-    mapping: title
-    # 评论输入框的位置，可选值： top | bottom
-    # Aavilable value: top | bottom
-    inputPosition: top
-    # 主题可选值： light | light_high_contrast | light_protanopia | light_tritanopia | dark | dark_high_contrast | dark_protanopia | dark_tritanopia | dark_dimmed | transparent_dark | preferred_color_scheme
-    # Available values: light | light_high_contrast | light_protanopia | light_tritanopia | dark | dark_high_contrast | dark_protanopia | dark_tritanopia | dark_dimmed | transparent_dark | preferred_color_scheme
-    theme: preferred_color_scheme
+  # giscus:
+  #   # Github 仓库地址，格式：用户名/仓库名称
+  #   # Github repository owner and name
+  #   repo: username/repo-name
+  #   # Giscus 生成的仓库 Id
+  #   # Generate repository Id from Giscus
+  #   repoId: #<repo-id>
+  #   # 讨论区的分类名称
+  #   # Github discussions category
+  #   category: Comments
+  #   # 讨论区分类 ID
+  #   # Generate category Id from Giscus
+  #   categoryId: #<category-id>
+  #   # 帖子上的反应将会显示在评论前
+  #   # The reactions for post will be shown before the comments
+  #   reactions: false
+  #   # 将元数据定期被发送到父页面（被嵌入的页面或控制台，用于调试）
+  #   # Metadata will be sent periodically to the parent window
+  #   emit: false
+  #   # 评论输入框的位置，可选值： top | bottom
+  #   # Aavilable value: top | bottom
+  #   # 讨论区帖子标题，可选值： pathname | url | title | og:title | 自定义
+  #   # Available values: pathname | url | title | og:title | custom
+  #   mapping: title
+  #   # 评论输入框的位置，可选值： top | bottom
+  #   # Aavilable value: top | bottom
+  #   inputPosition: top
+  #   # 主题可选值： light | light_high_contrast | light_protanopia | light_tritanopia | dark | dark_high_contrast | dark_protanopia | dark_tritanopia | dark_dimmed | transparent_dark | preferred_color_scheme
+  #   # Available values: light | light_high_contrast | light_protanopia | light_tritanopia | dark | dark_high_contrast | dark_protanopia | dark_tritanopia | dark_dimmed | transparent_dark | preferred_color_scheme
+  #   theme: preferred_color_scheme
+
+  # # twikoo 评论插件
+  # # 更多配置信息请参考：https://twikoo.js.org
+  # # Twikoo comments system
+  # # For more information: https://twikoo.js.org
+  # twikoo:
+  #   # 必填项，腾讯云环境填 envId；其他填写自己的后端地址
+  #   # Required, fill in envId for Tencent Cloud environment; fill in your own backend address for others
+  #   envid: 'http://192.168.31.50:8080'
+  #   # 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；其他可以不填写
+  #   # Region, default is ap-shanghai, fill in ap-shanghai or ap-guangzhou for Tencent Cloud environment; others can be left blank
+  #   region: 'ap-guangzhou'
 
 
   # ---------------------------------------------------------------
@@ -918,11 +1081,19 @@ params:
     id:     # <app_id>
     color:  "#fc6423"
 
-  # AddThis文章分享功能
-  # 更多信息及配置请参考：https://www.addthis.com
-  # AddThis Share. 
-  # See: https://www.addthis.com
-  addThisId: #<Your addthis> 
+  # 文章分享功能
+  share:
+    enable: true
+    # 更多信息与配置，请参考：https://sharethis.com
+    # For more information and configuration, please refer to:https://sharethis.com
+    # sharethis:
+    #   id: #<sharethis_id> 
+    # 简单的在线分享，没有统计数据功能，更多信息可参考：https://www.addtoany.com/
+    # Simple online sharing without statistical data function. 
+    # For more information, please refer to: https://www.addtoany.com/
+    addtoany:    
+      locale: zh-CN
+      num_services: 8 
 
 
   # ---------------------------------------------------------------
@@ -938,10 +1109,13 @@ params:
     #laId: #<anaytics_id> 
     # 百度统计
     # Baidu Analytics
-    baidu: 60845c805957b32e3a561bfeb64e8a8d
+    #baidu: #<anaytics_id>
     # 谷歌统计
     # Google Analytics
     #google: #<anaytics_id>
+    # 谷歌统计
+    # Cloudflare Analytics
+    #cloudflare: #<cloudflare_id>
     # 不蒜子统计
     # Show Views / Visitors of the website / page with busuanzi.
     # For more information: http://ibruce.info/2015/04/04/busuanzi/
@@ -1009,7 +1183,7 @@ params:
   # Gitter Support
   # For more information: https://gitter.im
   gitter:
-    enable: true
+    enable: false
     room: hugo-next/community
 
 
@@ -1027,7 +1201,7 @@ params:
     #  - flat      flat callout style with background, like on Mozilla or StackOverflow.
     #  - disabled  disable all CSS styles import of note tag.
     style: simple
-    icons: false
+    icons: true
     # Offset lighter of background in % for modern and flat styles (modern: -12 | 12; flat: -18 | 6).
     # Offset also applied to label tag variables. This option can work with disabled note tag.
     lightBgOffset: 0
@@ -1049,15 +1223,6 @@ params:
     # Default height
     height: 500px
 
-  # Mermaid tag
-  mermaid:
-    enable: false
-    # Available themes: default | dark | forest | neutral
-    theme:
-      light: default
-      dark: dark
-
-
   # ---------------------------------------------------------------
   # 动画效果设置
   # Animation Settings
@@ -1070,11 +1235,10 @@ params:
     enable: true
     async: true
     transition:
-      # All available transition variants: https://theme-next.js.org/animate/
       postBlock: fadeIn
       postHeader: fadeInDown
       postBody: fadeInDown
-      collHeader: fadeInLeft
+      collHeader: slideInRight
       # 侧边样效果 只有在 Pisces | Gemini 模式下才支持
       # Only for Pisces | Gemini.
       sidebar: fadeInUp
@@ -1103,30 +1267,17 @@ params:
 
 
   # ---------------------------------------------------------------
-  # CDN 服务（暂时只支持 unpkg 和 cndjs）
+  # CDN 服务
   # CDN Settings
   # ---------------------------------------------------------------
-
   vendors:
     # The CDN provider of NexT internal scripts.
-    # Available values: local | unpkg | cdnjs | qiniu | bootcdn | custom
-    # Warning: If you are using the latest master branch of NexT, please set `internal: local`
+    # Available values: local | cdn
     internal: local
     # The default CDN provider of third-party plugins.
-    # Available values: local | unpkg | cdnjs| qiniu | bootcdn | custom
-    # Dependencies for `plugins: local`: https://github.com/next-theme/plugins
-    plugins: qiniu
-    # TODO
+    # Available values: local | cdnjs | unpkg | jsdelivr | staticfile | bootcdn | 7ed | zstatic | zeyao | custom
+    plugins: local
     # Custom CDN URL
     # For example:
     # custom_cdn_url: https://cdn.jsdelivr.net/npm/${npm_name}@${version}/${minified}
     # custom_cdn_url: https://cdnjs.cloudflare.com/ajax/libs/${cdnjs_name}/${version}/${cdnjs_file}
-    #custom_cdn_url:
-
-  # TODO
-  # Assets
-  # Accelerate delivery of static files using a CDN
-  # The js option is only valid when vendors.internal is local.
-  css: css
-  js: js
-  images: imgs
